@@ -6,9 +6,11 @@ using namespace std;
 
 void play(int argc, char *argv[]);
 int parseInt(const char *numStr);
-vector<int> getTakenStones(const vector<int> &takenStones, int numOfStones);
+vector<int> *getUntakenStones(const vector<int> &takenStones, int numOfStones);
 bool checkPrimeNumber(int num);
 bool checkFactorOrMultiple(int numA, int numB);
+float evaluate(const vector<int> &untakenStones, int lastTakenStone);
+void test(vector<int> untakenStones, int numOfStones);
 
 int main(int argc, char *argv[]){
 	play(argc, argv);
@@ -28,7 +30,10 @@ void play(int argc, char *argv[]){
 //		cout << takenStones[i] << endl;
 //	}
 
+	test(takenStones, numOfStones);
+}
 
+void test(vector<int> takenStones, int numOfStones){
 	// test code for parseInt();
 	cout << endl << "parseInt() test" << endl;
 	cout << parseInt("1") << endl;
@@ -40,9 +45,10 @@ void play(int argc, char *argv[]){
 
 
 
-	// test code for getTakenStones();
-	cout << endl << "getTakenStones() test" << endl;
-	vector<int> untakenStones = getTakenStones(takenStones, numOfStones);
+	// test code for getUntakenStones();
+	cout << endl << "getUntakenStones() test" << endl;
+	vector<int> &untakenStones = 
+		*getUntakenStones(takenStones, numOfStones);
 	cout << "size : " << untakenStones.size() << endl;
 	for(int i = 0; i < untakenStones.size(); ++i){
 		cout << untakenStones[i] << endl;
@@ -70,20 +76,42 @@ void play(int argc, char *argv[]){
 	cout << "result must be 1 : "  << checkPrimeNumber(13) << endl;
 	cout << "result must be 1 : "  << checkPrimeNumber(73) << endl;
 	cout << "result must be 1 : "  << checkPrimeNumber(97) << endl;
+
+	// test code for evaluate();
+	cout << endl << "evaluate() test" << endl;
+	cout 
+	<< evaluate(untakenStones, takenStones[takenStones.size() - 1]) 
+	<< endl;
 }
 
-float evaluate(vector<int> takenStones, int lastTakenStone){
-//	for(int i = 0; i < /*아직 선택되지 않은 돌들*/; ++i){
-//		if(checkFactorOrMultiple(/*아직 선택되지 않은 돌들*/, lastTakenStone)){
-//
-//			evaluate(//////////////, takenStones[i]);
-//		}
-//
-//	}
+float evaluate(const vector<int> &untakenStones, int lastTakenStone){
+	int result = 0;
 
+	if(!untakenStones.size()){
+		return 1.0;
+	}
+	for(int i = 0; i < untakenStones.size(); ++i){
+		if(checkFactorOrMultiple(untakenStones[i], lastTakenStone)){
+			vector<int> *nextUntakenStones = 
+				new vector<int>(untakenStones);
+			vector<int>::iterator itr = nextUntakenStones->begin();
+			while(itr != nextUntakenStones->end()){
+				if(*itr == untakenStones[i]){
+					nextUntakenStones->erase(itr);
+					break;
+				}
+				++itr;
+			}
+
+			result = evaluate(*nextUntakenStones, untakenStones[i]);
+			delete nextUntakenStones;
+		}
+	}
+
+	return result;
 }
 
-vector<int> getTakenStones(const vector<int> &takenStones, int numOfStones){
+vector<int> *getUntakenStones(const vector<int> &takenStones, int numOfStones){
 	int takenStonesIndex = 0;
 	int untakenStonesIndex = 0;
 	int untakenStoneNum = 1;
@@ -91,14 +119,15 @@ vector<int> getTakenStones(const vector<int> &takenStones, int numOfStones){
 	vector<int> *sortedTakenStones = new vector<int>(takenStones);
 	sort(sortedTakenStones->begin(), sortedTakenStones->end());
 
-	vector<int> untakenStones = 
-		vector<int>(numOfStones - takenStones.size());
+	vector<int> *untakenStones = 
+		new vector<int>(numOfStones - takenStones.size());
 
 	while(untakenStoneNum <= numOfStones){
 		if((*sortedTakenStones)[takenStonesIndex] == untakenStoneNum){
 			++takenStonesIndex;
 		} else {
-			untakenStones[untakenStonesIndex++] = untakenStoneNum;
+			(*untakenStones)[untakenStonesIndex++] = 
+				untakenStoneNum;
 		}
 		++untakenStoneNum;
 	}
