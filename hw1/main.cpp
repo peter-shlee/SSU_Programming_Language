@@ -4,12 +4,15 @@
 #include <cstring>
 using namespace std;
 
+#define MINUS_INFINITY -1234567890.0
+#define PLUS_INFINITY 1234567890.0
+
 void play(int argc, char *argv[]);
 int parseInt(const char *numStr);
 vector<int> *getUntakenStones(const vector<int> &takenStones, int numOfStones);
 bool checkPrimeNumber(int num);
 bool checkFactorOrMultiple(int numA, int numB);
-float evaluate(const vector<int> &untakenStones, int lastTakenStone);
+float evaluate(const vector<int> &untakenStones, int lastTakenStone, bool isMaxPlayer);
 void test(vector<int> untakenStones, int numOfStones);
 
 int main(int argc, char *argv[]){
@@ -79,19 +82,39 @@ void test(vector<int> takenStones, int numOfStones){
 
 	// test code for evaluate();
 	cout << endl << "evaluate() test" << endl;
+	bool isMaxPlayer;
+	if(takenStones.size() % 2)
+		isMaxPlayer = true;
+	else
+		isMaxPlayer = false;
+
 	cout 
-	<< evaluate(untakenStones, takenStones[takenStones.size() - 1]) 
+	<< evaluate(untakenStones, takenStones[takenStones.size() - 1], isMaxPlayer) 
 	<< endl;
 }
 
-float evaluate(const vector<int> &untakenStones, int lastTakenStone){
-	int result = 0;
+float evaluate(const vector<int> &untakenStones
+		, int lastTakenStone
+		, bool isMaxPlayer){
+	cout << "------------------------------" << endl;
+	bool isAvailableStoneLeft = false;
+	float result;
 
+	if(isMaxPlayer) result = -1.0;
+	else result = 1.0;
+
+	cout << "size : " << untakenStones.size() << endl;
 	if(!untakenStones.size()){
-		return 1.0;
+		cout << "isMaxPlayer : " << isMaxPlayer << endl;
+		if(isMaxPlayer)
+			return 1.0;
+		else
+			return -1.0;
 	}
 	for(int i = 0; i < untakenStones.size(); ++i){
 		if(checkFactorOrMultiple(untakenStones[i], lastTakenStone)){
+			isAvailableStoneLeft = true;
+			cout << untakenStones[i] << endl;
 			vector<int> *nextUntakenStones = 
 				new vector<int>(untakenStones);
 			vector<int>::iterator itr = nextUntakenStones->begin();
@@ -103,11 +126,26 @@ float evaluate(const vector<int> &untakenStones, int lastTakenStone){
 				++itr;
 			}
 
-			result = evaluate(*nextUntakenStones, untakenStones[i]);
+			cout << "next size : " << nextUntakenStones->size() << endl;
+			if(isMaxPlayer)
+				result = max(result, evaluate(*nextUntakenStones, untakenStones[i], !isMaxPlayer));
+			else
+				result = min(result, evaluate(*nextUntakenStones, untakenStones[i], !isMaxPlayer));
+
 			delete nextUntakenStones;
 		}
 	}
 
+	if(!isAvailableStoneLeft){
+		cout << "terminal node" << endl;
+		if(isMaxPlayer)
+			result = 1.0;
+		else
+			result = -1.0;
+	}
+
+	cout << result << endl;
+	cout << "------------------------------" << endl;
 	return result;
 }
 
