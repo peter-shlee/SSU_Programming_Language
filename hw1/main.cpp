@@ -6,6 +6,7 @@ using namespace std;
 
 #define MINUS_INFINITY -1234567890.0
 #define PLUS_INFINITY 1234567890.0
+#define MAX_VISIT_COUNT 100
 
 void play(int argc, char *argv[]);
 int parseInt(const char *numStr);
@@ -15,7 +16,7 @@ bool checkFactorOrMultiple(int numA, int numB);
 float evaluate(const vector<int> &untakenStones, int lastTakenStone, bool isMaxPlayer);
 void test(vector<int> untakenStones, int numOfStones);
 double calculateResultValue(const vector<int> &untakenStones, int lastTakenStone, bool isMaxPlayer);
-float alphaBetaPruning(const vector<int> &untakenStones, int lastTakenStone, bool isMaxPlayer, int maxDepth, int currentDepth, float alpha, float beta);
+float alphaBetaPruning(const vector<int> &untakenStones, int lastTakenStone, bool isMaxPlayer, int maxDepth, int currentDepth, float alpha, float beta, int *visitedNodeCnt);
 vector<int> *getFirstPickStones(int numOfStones);
 
 int main(int argc, char *argv[]){
@@ -113,7 +114,8 @@ void test(vector<int> takenStones, int numOfStones){
 
 	// test code for alphaBetaPruning
 	cout << endl << "alphaBetaPruning() test" << endl;
-	cout << alphaBetaPruning(untakenStones, lastTakenStone , isMaxPlayer, 10, 0, MINUS_INFINITY, PLUS_INFINITY) << endl;
+	int visitedNodeCnt = 0;
+	cout << alphaBetaPruning(untakenStones, lastTakenStone , isMaxPlayer, 5, 0, MINUS_INFINITY, PLUS_INFINITY, &visitedNodeCnt) << endl;
 }
 
 float evaluate(const vector<int> &untakenStones
@@ -271,7 +273,9 @@ float evaluate(const vector<int> &untakenStones
 //	return result;
 //}
 
-float alphaBetaPruning(const vector<int> &untakenStones, int lastTakenStone, bool isMaxPlayer, int maxDepth, int currentDepth, float alpha, float beta){
+float alphaBetaPruning(const vector<int> &untakenStones, int lastTakenStone, bool isMaxPlayer, int maxDepth, int currentDepth, float alpha, float beta, int *visitedNodeCnt){
+	++(*visitedNodeCnt);
+	cout << "vcnt : " << *visitedNodeCnt << endl;
 	int selectedNode;
 	// 
 	if (lastTakenStone == 0) {
@@ -291,7 +295,7 @@ float alphaBetaPruning(const vector<int> &untakenStones, int lastTakenStone, boo
 			sort(nextUntakenStones.begin(), nextUntakenStones.end());
 
 			tmpValue = value;
-			value = max(value, alphaBetaPruning(nextUntakenStones, (*firstPickStones)[i], !isMaxPlayer, maxDepth, currentDepth + 1, alpha, beta)); // 다음 단계 진행
+			value = max(value, alphaBetaPruning(nextUntakenStones, (*firstPickStones)[i], !isMaxPlayer, maxDepth, currentDepth + 1, alpha, beta, visitedNodeCnt)); // 다음 단계 진행
 			if(tmpValue != value) selectedNode = (*firstPickStones)[i]; 
 			alpha = max(alpha, value);
 			if(alpha >= beta) {
@@ -317,7 +321,7 @@ float alphaBetaPruning(const vector<int> &untakenStones, int lastTakenStone, boo
 		}
 	}
 
-	if(maxDepth == currentDepth || isTerminalNode) {
+	if(maxDepth == currentDepth || isTerminalNode || *visitedNodeCnt >= MAX_VISIT_COUNT) {
 		return calculateResultValue(untakenStones, lastTakenStone, isMaxPlayer);
 	}
 
@@ -343,7 +347,7 @@ float alphaBetaPruning(const vector<int> &untakenStones, int lastTakenStone, boo
 				sort(nextUntakenStones->begin(), nextUntakenStones->end());
 
 				tmpValue = value;
-				value = max(value, alphaBetaPruning(*nextUntakenStones, untakenStones[i], !isMaxPlayer, maxDepth, currentDepth + 1, alpha, beta));
+				value = max(value, alphaBetaPruning(*nextUntakenStones, untakenStones[i], !isMaxPlayer, maxDepth, currentDepth + 1, alpha, beta, visitedNodeCnt));
 				if(tmpValue != value) selectedNode = untakenStones[i]; 
 				alpha = max(alpha, value);
 				delete nextUntakenStones;
@@ -372,7 +376,7 @@ float alphaBetaPruning(const vector<int> &untakenStones, int lastTakenStone, boo
 				sort(nextUntakenStones->begin(), nextUntakenStones->end());
 
 				tmpValue = value;
-				value = min(value, alphaBetaPruning(*nextUntakenStones, untakenStones[i], !isMaxPlayer, maxDepth, currentDepth + 1, alpha, beta));//
+				value = min(value, alphaBetaPruning(*nextUntakenStones, untakenStones[i], !isMaxPlayer, maxDepth, currentDepth + 1, alpha, beta, visitedNodeCnt));//
 				if(tmpValue != value) selectedNode = untakenStones[i]; 
 				beta = min(beta, value); //
 				delete nextUntakenStones;
@@ -391,7 +395,7 @@ float alphaBetaPruning(const vector<int> &untakenStones, int lastTakenStone, boo
 vector<int> *getFirstPickStones(int numOfStones) {
 	vector<int> stones = vector<int>();
 
-	for(int i = 1; i <= numOfStones / 2; ++i) {
+	for(int i = 1; i < (numOfStones / 2); ++i) {
 		if(i % 2 == 1) stones.push_back(i);
 	}
 
