@@ -1,0 +1,15 @@
+﻿  compiler.cpp
+C:\Users\dgh04\source\repos\컴퓨터학부_이승현_20160548_과제3_비주얼스튜디오프로젝트\컴퓨터학부_이승현_20160548_과제3_비주얼스튜디오프로젝트\compiler.cpp(162,27): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
+C:\Users\dgh04\source\repos\컴퓨터학부_이승현_20160548_과제3_비주얼스튜디오프로젝트\컴퓨터학부_이승현_20160548_과제3_비주얼스튜디오프로젝트\compiler.cpp(203,23): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
+C:\Users\dgh04\source\repos\컴퓨터학부_이승현_20160548_과제3_비주얼스튜디오프로젝트\컴퓨터학부_이승현_20160548_과제3_비주얼스튜디오프로젝트\compiler.cpp(213,23): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
+C:\Users\dgh04\source\repos\컴퓨터학부_이승현_20160548_과제3_비주얼스튜디오프로젝트\컴퓨터학부_이승현_20160548_과제3_비주얼스튜디오프로젝트\compiler.cpp(225,27): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
+C:\Users\dgh04\source\repos\컴퓨터학부_이승현_20160548_과제3_비주얼스튜디오프로젝트\컴퓨터학부_이승현_20160548_과제3_비주얼스튜디오프로젝트\compiler.cpp(278,23): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
+C:\Users\dgh04\source\repos\컴퓨터학부_이승현_20160548_과제3_비주얼스튜디오프로젝트\컴퓨터학부_이승현_20160548_과제3_비주얼스튜디오프로젝트\compiler.cpp(305,11): warning C4101: 'nextUsrParam' :참조되지 않은 지역 변수입니다.
+  interpreter.cpp
+  main.cpp
+C:\Users\dgh04\source\repos\컴퓨터학부_이승현_20160548_과제3_비주얼스튜디오프로젝트\컴퓨터학부_이승현_20160548_과제3_비주얼스튜디오프로젝트\compiler.cpp(302,10): warning C4101: 'resultBuf' :참조되지 않은 지역 변수입니다.
+C:\Users\dgh04\source\repos\컴퓨터학부_이승현_20160548_과제3_비주얼스튜디오프로젝트\컴퓨터학부_이승현_20160548_과제3_비주얼스튜디오프로젝트\main.cpp(36,14): warning C4101: 'isCompiledSucceeded' :참조되지 않은 지역 변수입니다.
+C:\Users\dgh04\source\repos\컴퓨터학부_이승현_20160548_과제3_비주얼스튜디오프로젝트\컴퓨터학부_이승현_20160548_과제3_비주얼스튜디오프로젝트\main.cpp(188,32): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
+  코드를 생성하고 있습니다...
+C:\Users\dgh04\source\repos\컴퓨터학부_이승현_20160548_과제3_비주얼스튜디오프로젝트\컴퓨터학부_이승현_20160548_과제3_비주얼스튜디오프로젝트\main.cpp(189,34): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
+  컴퓨터학부_이승현_20160548_과제3_비주얼스튜디오프로젝트.vcxproj -> C:\Users\dgh04\source\repos\컴퓨터학부_이승현_20160548_과제3_비주얼스튜디오프로젝트\Debug\컴퓨터학부_이승현_20160548_과제3_비주얼스튜디오프로젝트.exe

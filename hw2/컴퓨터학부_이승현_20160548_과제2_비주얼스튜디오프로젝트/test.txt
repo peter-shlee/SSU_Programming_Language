@@ -1,0 +1,18 @@
+(MINUS 2 1)
+(IF 1 4)
+(MINUS (MINUS 2 (IF 1 4)) 1)
+(MINUS (MINUS 2 1) 1)
+(MINUS 2 (MINUS 2 1))
+(MINUS 2 (MINUS ---2 1))
+(MINUS (MINUS 2 (IF (IF 3 3) (IF 55 (MINUS 66 66)))) 1)
+   (IF 1 4)     
+(IF 1 4 ) 
+(IF 1 4)) 
+(IF 1 4( 
+(IF 1 4
+IF 1 4
+fdf232
+------abf
+(NONE 1 4)
+13123.323
+#@#@$
